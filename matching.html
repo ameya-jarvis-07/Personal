@@ -36,12 +36,23 @@
         #view-matches-btn {
             display: none;
         }
+        .heart-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
         <div class="bg-pink-500 py-6 px-8 text-center">
-            <h1 class="text-3xl font-bold text-white">JUMBLE Matches</h1>
+            <div class="flex items-center justify-center space-x-2">
+                <h1 class="text-3xl font-bold text-white">JUMBLE</h1>
+                <i data-feather="heart" class="heart-pulse text-white w-8 h-8"></i>
+            </div>
             <p class="text-pink-100 mt-2">Swipe through potential matches</p>
         </div>
         
@@ -63,9 +74,9 @@
                 </button>
             </div>
             
-            <!-- New View Matches Button -->
+            <!-- View Matches Button -->
             <div class="text-center mt-4 hidden" id="view-matches-container">
-                <button id="view-matches-btn" class="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6 py-3 button-shadow transition duration-200">
+                <button id="view-matches-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
                     View Your Matches
                 </button>
             </div>
@@ -82,16 +93,16 @@
         const viewMatchesBtn = document.getElementById('view-matches-btn');
         const viewMatchesContainer = document.getElementById('view-matches-container');
         
-        // Create 8 profile cards with absolute paths for GitHub Pages
+        // Using absolute paths for GitHub Pages
         const profiles = [
-            { name: "Ameya", age: 19, photo: "/img1.jpg" },
-            { name: "Jarvis", age: 19, photo: "/img2.jpg" },
-            { name: "Ameya Again", age: 19, photo: "/img3.jpg" },
-            { name: "Also Jarvis", age: 19, photo: "/img4.jpg" },
-            { name: "Mr. Ramteke", age: 19, photo: "/img5.jpg" },
-            { name: "POS", age: 19, photo: "/img6.jpg" },
-            { name: "Pagal", age: 19, photo: "/img7.jpg" },
-            { name: "Mad in Love", age: 19, photo: "/img8.jpg" }
+            { name: "Ameya", age: 19, photo: "/Personal/img1.jpg" },
+            { name: "Jarvis", age: 19, photo: "/Personal/img2.jpg" },
+            { name: "Ameya Again", age: 19, photo: "/Personal/img3.jpg" },
+            { name: "Also Jarvis", age: 19, photo: "/Personal/img4.jpg" },
+            { name: "Mr. Ramteke", age: 19, photo: "/Personal/img5.jpg" },
+            { name: "POS", age: 19, photo: "/Personal/img6.jpg" },
+            { name: "Pagal", age: 19, photo: "/Personal/img7.jpg" },
+            { name: "Mad in Love", age: 19, photo: "/Personal/img8.jpg" }
         ];
         
         let currentIndex = 0;
@@ -103,7 +114,7 @@
             card.style.zIndex = profiles.length - index;
             card.innerHTML = `
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg">
-                    <img src="${profile.photo}" alt="${profile.name}" class="w-full h-64 object-cover">
+                    <img src="${profile.photo}" alt="${profile.name}" class="w-full h-64 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UsIHNhbnMtc2VyaWYiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='">
                     <div class="p-4">
                         <h3 class="text-xl font-bold">${profile.name}, ${profile.age}</h3>
                         <p class="text-gray-600">Looking for connections</p>
