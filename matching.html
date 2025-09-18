@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUMBLE - Find Matches</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #6b6bff);
+            min-height: 100vh;
+        }
+        .card {
+            transition: all 0.5s ease;
+            transform-origin: center bottom;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .card-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+        .slide-up {
+            transform: translateY(-100%) rotate(-5deg);
+            opacity: 0;
+        }
+        .button-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+        #view-matches-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-pink-500 py-6 px-8 text-center">
+            <h1 class="text-3xl font-bold text-white">JUMBLE Matches</h1>
+            <p class="text-pink-100 mt-2">Swipe through potential matches</p>
+        </div>
+        
+        <div class="p-8 space-y-6">
+            <div class="relative card-container">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+            
+            <div class="text-center text-sm text-gray-500">
+                <p id="counter">Match 1 of 8</p>
+            </div>
+            
+            <div class="flex justify-center space-x-12">
+                <button id="yes-btn" class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 button-shadow transition duration-200">
+                    <i data-feather="check" class="w-8 h-8"></i>
+                </button>
+                <button id="no-btn" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-4 button-shadow transition duration-200">
+                    <i data-feather="x" class="w-8 h-8"></i>
+                </button>
+            </div>
+            
+            <!-- New View Matches Button -->
+            <div class="text-center mt-4 hidden" id="view-matches-container">
+                <button id="view-matches-btn" class="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6 py-3 button-shadow transition duration-200">
+                    View Your Matches
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        feather.replace();
+        
+        const cardContainer = document.querySelector('.card-container');
+        const counter = document.getElementById('counter');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const viewMatchesBtn = document.getElementById('view-matches-btn');
+        const viewMatchesContainer = document.getElementById('view-matches-container');
+        
+        // Create 8 profile cards with absolute paths for GitHub Pages
+        const profiles = [
+            { name: "Ameya", age: 19, photo: "/images/img1.jpg" },
+            { name: "Jarvis", age: 19, photo: "/images/img2.jpg" },
+            { name: "Ameya Again", age: 19, photo: "/images/img3.jpg" },
+            { name: "Also Jarvis", age: 19, photo: "/images/img4.jpg" },
+            { name: "Mr. Ramteke", age: 19, photo: "/images/img5.jpg" },
+            { name: "POS", age: 19, photo: "/images/img6.jpg" },
+            { name: "Pagal", age: 19, photo: "/images/img7.jpg" },
+            { name: "Mad in Love", age: 19, photo: "/images/img8.jpg" }
+        ];
+        
+        let currentIndex = 0;
+        
+        // Create and display cards
+        profiles.forEach((profile, index) => {
+            const card = document.createElement('div');
+            card.className = `card ${index === 0 ? '' : 'hidden'}`;
+            card.style.zIndex = profiles.length - index;
+            card.innerHTML = `
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                    <img src="${profile.photo}" alt="${profile.name}" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold">${profile.name}, ${profile.age}</h3>
+                        <p class="text-gray-600">Looking for connections</p>
+                    </div>
+                </div>
+            `;
+            cardContainer.appendChild(card);
+        });
+        
+        // Handle button clicks
+        function handleChoice() {
+            if (currentIndex >= profiles.length - 1) {
+                counter.textContent = "Great! You've viewed all potential matches.";
+                yesBtn.disabled = true;
+                noBtn.disabled = true;
+                
+                // Show the View Matches button
+                viewMatchesBtn.style.display = "block";
+                viewMatchesContainer.classList.remove("hidden");
+                return;
+            }
+            
+            const currentCard = document.querySelectorAll('.card')[currentIndex];
+            currentCard.classList.add('slide-up');
+            
+            setTimeout(() => {
+                currentCard.classList.add('hidden');
+                currentCard.classList.remove('slide-up');
+                currentIndex++;
+                document.querySelectorAll('.card')[currentIndex].classList.remove('hidden');
+                counter.textContent = `Match ${currentIndex + 1} of ${profiles.length}`;
+            }, 500);
+        }
+        
+        // Redirect to match.html when View Matches button is clicked
+        viewMatchesBtn.addEventListener('click', function() {
+            window.location.href = 'match.html';
+        });
+        
+        yesBtn.addEventListener('click', handleChoice);
+        noBtn.addEventListener('click', handleChoice);
+    </script>
+</body>
+</html>
